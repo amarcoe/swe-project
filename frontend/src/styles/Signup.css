@@ -19,6 +19,7 @@
 }
 .form__label{
     text-align: left;
+    width: 25rem;
 }
 .form__input{
     width: 20rem;
@@ -56,6 +57,19 @@
 }
 ul{
     width: 30%;
+    
+}
+li{
+    position: relative;
+}
+.del-btn{
+    position: absolute;
+    top: -1rem;
+    right: 2rem;
+    cursor: pointer;
+}
+.del-btn:hover{
+    transform: translateY(2px);
 }
 #equipment-label{
     margin-top: 3rem;

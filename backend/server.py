@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash
 
 app = flask.Flask(__name__)
 app.secret_key = os.getenv("secret_key")
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://amarcoe@localhost:5432/postgres"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://amarcoe@localhost:5432"
 
 login_manager = LoginManager()
 
@@ -26,7 +26,7 @@ create_table(app)
 
 @app.route("/signup")
 def login():
-    # With password I'll get it form form
+    # With password I'll get it from form
     # Theoretically form_data = flask.requests.form
     # generate_password_hash(form_data[password])
     password = "anything"

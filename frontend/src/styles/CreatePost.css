@@ -1,0 +1,145 @@
+.section{
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+.likert-scale{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+    width: 80%; 
+    border-bottom: 1px solid black;
+    margin-bottom: 2rem;
+    
+}
+.rating{
+    
+    display: inherit;
+    flex-direction: column;
+    padding: .25rem;    
+    width: 5rem;
+}
+
+.rating-label{
+    font-size: .85rem;
+    font-weight: bold;
+}
+.grinder-container{
+    
+    width: 50%;
+    display: flex;
+
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+.item-list{
+    height: 2rem;
+    width: 15rem;
+    border-radius: .25rem;
+    margin: 1rem;
+}
+.input-fields{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    width: 70%;
+    position: relative;
+}
+textarea{
+    resize: none;
+    width: 60%;
+    margin-bottom: .5rem;
+    font-family: 'Suwannaphum';
+}
+.remove-btn{
+    position: absolute;
+    top: -1.1rem;
+    right: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+}
+.remove-btn:hover{
+    transform: translateY(2px);
+}
+.input-label{
+    position: absolute;
+    top: -.2rem;
+    left: 3rem;
+}
+.post-btn{
+    background-color: #faf9f2;
+    width: 10rem;
+    color: black;
+    padding: 1rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 10px 10px 22px -15px rgba(0,0,0,0.75);
+
+}
+.post-btn:hover{
+    background-color:rgb(137, 137, 219);
+    transform: translateY(2px);
+}
+.btn{
+    background-color: #faf9f2;
+    width: 10rem;
+    color: black;
+    padding: .25rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 10px 10px 22px -15px rgba(0,0,0,0.75);
+
+
+}
+.btn:hover{
+    transform: translateY(2px);
+    background-color: rgb(137, 137, 219);
+    color: black;
+    
+}
+input[type=radio]:checked{
+    border: 5px solid #0DFF92;
+}
+select{
+    font-family: 'Suwannaphum';
+}
+.small-box{
+    border: solid black 1px;
+    border-radius: 1rem;
+    width: 10rem;
+    height: 2rem;
+}
+.fade-enter {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.fade-enter-active {
+opacity: 1;
+max-height: 200px;
+transition: opacity 500ms, max-height 1100ms;
+}
+
+.fade-exit {
+opacity: 1;
+max-height: 200px;
+}
+
+.fade-exit-active {
+opacity: 0;
+max-height: 0;
+overflow: hidden;
+transition: opacity 500ms, max-height 500ms;
+}
+  

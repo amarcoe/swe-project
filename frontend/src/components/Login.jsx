@@ -26,7 +26,7 @@ export const Login = () => {
 				</div>
 				
 				<label className="form__label" htmlFor="user">
-					username: <span className="nowrap"></span>
+					Username: <span className="nowrap"></span>
 				</label>
 				<input
 					className="form__input"
