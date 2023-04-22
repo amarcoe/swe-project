@@ -45,8 +45,10 @@ class Users(db.Model, UserMixin):
     brewers = db.Column(db.ARRAY(db.String(80)), nullable=True, unique=False)
     grinder = db.Column(db.ARRAY(db.String(80)), nullable=True, unique=False)
     roaster = db.Column(db.String(100), nullable=True, unique=False)
-    # recipes = db.Column(db.ARRAY(db.ForeignKey("posts.id")))
+    # bookmarked_recipes = db.Column(db.ARRAY(db.ForeignKey("posts.id")))
     # Need to get ForeignKey working, haven't looked into it much
+    user_recipes = db.Column(db.ARRAY(db.String(10000)), nullable=True, unique=False)
+    # Need to test this one
 
     #     Username
     # Password

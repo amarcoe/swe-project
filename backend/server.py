@@ -1,14 +1,14 @@
 import os
 import flask
 import requests
-from database import create_table, Users, db, Posts
+from backend.database import create_table, Users, db, Posts
 from datetime import datetime
 from flask_login import LoginManager, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash
 
 app = flask.Flask(__name__)
 app.secret_key = os.getenv("secret_key")
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://amarcoe@localhost:5432"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 
 login_manager = LoginManager()
 
