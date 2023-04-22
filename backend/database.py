@@ -16,14 +16,14 @@ class Posts(db.Model):
     # Will be input by user
     coarseness = db.Column(db.String(80), nullable=True, unique=False)
     # Will be chosen by user
-    recipe = db.Column(db.ARRAY(db.String(200)))
+    recipe = db.Column(db.ARRAY(db.String(1000)), nullable=True, unique=False)
     # Array entered by user
     roast_level = db.Column(db.String(80), nullable=False, unique=False)
     # Entered by user
     bookmarked = db.Column(db.ARRAY(db.String(80)))
     # Think it will be an array added to with each current_user
     post_date = db.Column(db.String(80), nullable=False, unique=False)
-    # I'll just use datetime to pass this information in the backend
+    # I'll just use datetime to pass this information in server
 
 
 #     Author ID
@@ -47,8 +47,8 @@ class Users(db.Model, UserMixin):
     roaster = db.Column(db.String(100), nullable=True, unique=False)
     # bookmarked_recipes = db.Column(db.ARRAY(db.ForeignKey("posts.id")))
     # Need to get ForeignKey working, haven't looked into it much
-    user_recipes = db.Column(db.ARRAY(db.String(10000)), nullable=True, unique=False)
-    # Need to test this one
+    user_recipes = db.Column(db.ARRAY(db.String(1000)), nullable=True, unique=False)
+    # This should just query the Posts database by username
 
     #     Username
     # Password
@@ -59,11 +59,8 @@ class Users(db.Model, UserMixin):
 
     def authenticate(username, password):
         user = Users.query.filter_by(username=username).first()
-        print("I'm in authenticate")
         print(user.password)
         if user and check_password_hash(user.password, password):
-            print(password)
-            print("Let's fucking go")
             return user
         else:
             return None
