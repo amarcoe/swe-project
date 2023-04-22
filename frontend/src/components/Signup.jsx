@@ -80,10 +80,19 @@ export const Signup = () => {
         formData.append('password', password)
         formData.append('grinders', grinders)
         formData.append('brewers', brewers)
-
+        
         for (const [name, value] of formData.entries()) {
             console.log(`${name}: ${value}`);
         }
+
+        // actual fetch request to the server for user signup
+        fetch("http://localhost:5000/signup", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error))
 
     }
 

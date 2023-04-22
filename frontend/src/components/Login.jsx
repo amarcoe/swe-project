@@ -17,6 +17,11 @@ export const Login = () => {
     const submit = (event) => {
         event.preventDefault()
         console.log(username, password)
+		const formData = new FormData();
+		formData.append('username', username)
+		formData.append('password', password)
+
+		fetch("http://localhost:5000/signup")
     }
     const content = (
         <div className="form-container">
