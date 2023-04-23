@@ -26,8 +26,9 @@ create_table(app)
 
 @app.route("/signup")
 def login():
-    # With password I'll get it form form
+    # With password I'll get it from form
     # Theoretically form_data = flask.requests.form
+    #   Alternatively: username = request.form['username'] - JH
     # generate_password_hash(form_data[password])
     password = "anything"
     # Just a dummy password to test against, will drop table don't take off points
