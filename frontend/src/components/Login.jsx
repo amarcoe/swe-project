@@ -17,6 +17,11 @@ export const Login = () => {
     const submit = (event) => {
         event.preventDefault()
         console.log(username, password)
+		const formData = new FormData();
+		formData.append('username', username)
+		formData.append('password', password)
+
+		fetch("http://localhost:5000/signup")
     }
     const content = (
         <div className="form-container">
@@ -26,7 +31,7 @@ export const Login = () => {
 				</div>
 				
 				<label className="form__label" htmlFor="user">
-					username: <span className="nowrap"></span>
+					Username: <span className="nowrap"></span>
 				</label>
 				<input
 					className="form__input"

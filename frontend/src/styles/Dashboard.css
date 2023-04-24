@@ -1,0 +1,49 @@
+.dash-container{
+    background: #684E32;
+    padding: 2rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 70%;
+    box-shadow: 10px 10px 26px -8px rgba(0,0,0,0.51);
+}
+.post-container{
+    background: #ffea76;
+    color: black;
+    border-radius: 1rem;
+    padding: 1rem;
+    
+}
+.post{
+    border: solid black;
+    border-radius: 1rem;
+    background: rgba(226,216,38,0.5382830626450116);
+}
+.post-header{
+    display: flex;
+    flex-direction: row;
+}
+.fade-enter {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.fade-enter-active {
+opacity: 1;
+max-height: 500px;
+transition: opacity 500ms, max-height 1100ms;
+}
+
+.fade-exit {
+opacity: 1;
+max-height: 500px;
+}
+
+.fade-exit-active {
+opacity: 0;
+max-height: 0;
+overflow: hidden;
+transition: opacity 500ms, max-height 1100ms;
+}
