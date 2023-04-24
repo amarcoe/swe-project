@@ -21,7 +21,13 @@ export const Login = () => {
 		formData.append('username', username)
 		formData.append('password', password)
 
-		fetch("http://localhost:5000/signup")
+		fetch("http://localhost:5000/login", {
+			method: "POST",
+			body: formData
+		})
+		.then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error))
     }
     const content = (
         <div className="form-container">

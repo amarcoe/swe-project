@@ -23,6 +23,7 @@
 .form__label{
     text-align: left;
     width: 25rem;
+    margin-top: 2rem;
 }
 .form__input{
     width: 20rem;
