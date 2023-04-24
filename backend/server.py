@@ -2,11 +2,14 @@ import os
 import flask
 import requests
 import datetime
-from backend.database import create_table, Users, db, Posts
+from database import create_table, Users, db, Posts
 from flask_login import LoginManager, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash
+from flask import request
+from flask_cors import CORS
 
 app = flask.Flask(__name__)
+CORS(app)
 app.secret_key = os.getenv("secret_key")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 
@@ -42,7 +45,7 @@ def handle_login():
         return "Information was incorrect"
 
 
-@app.route("/signup")
+@app.route("/signup", methods=['POST'])
 def handle_signup():
     # Will get information from signup.jsx
     form_data = flask.request.form
