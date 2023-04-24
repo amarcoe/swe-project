@@ -1,8 +1,8 @@
 import os
 import flask
 import requests
+import datetime
 from backend.database import create_table, Users, db, Posts
-from datetime import datetime
 from flask_login import LoginManager, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash
 
@@ -24,46 +24,87 @@ def load_user(id):
 create_table(app)
 
 
+@app.route("/")
+def whatever():
+    # Will be home.jsx
+    return flask.redirect(flask.url_for("handle_post"))
+
+
+@app.route("/login")
+def handle_login():
+    form_data = flask.request.form
+    user = Users.authenticate("dummy", "anything")
+    # Will take username and password from form_data and run them through authenticate
+    if user:
+        login_user(user)
+        return "User authenticated and logged in"
+    else:
+        return "Information was incorrect"
+
+
 @app.route("/signup")
-def login():
-    # With password I'll get it from form
-    # Theoretically form_data = flask.requests.form
-    #   Alternatively: username = request.form['username'] - JH
-    # generate_password_hash(form_data[password])
-    password = "anything"
-    # Just a dummy password to test against, will drop table don't take off points
-    hashed_password = generate_password_hash(password)
+def handle_signup():
+    # Will get information from signup.jsx
+    form_data = flask.request.form
+    username = request.form["username"]
+    # hashed_password = generate_password_hash(form_data["password"])
     new_user = Users(
-        username="dummy",
-        password=hashed_password,
-        brewers=["Chemex", "Aeropress", "Clever"],
-        grinder=["Baratza Encore, Fellow Ode"],
-        roaster="Eiland",
+        username=request.form["username"],
+        password=request.form["password"],
+        brewers=request.form["brewers"],
+        grinder=request.form["grinders"],
+        roaster=request.form["roasters"],
     )
     db.session.add(new_user)
     db.session.commit()
-    # Test if character limit is per string or entire list
-    # If it's under given amount type more and try to break it
+    return brewers
 
 
-@app.route("/update")
-def update_user():
-    Users.authenticate("dummy", "anything")
-    # Proves salt/hash works
-    user = Users.query.get(1)
-    # Just grabbed a random one to make sure I know how to update
+@app.route("/update_user")
+def handle_user_update():
+    form_data = flask.request.form
+    user = Users.query.get(request.form["username"])
+    # Will be queried by username when I have actual form data
     if user:
         # Update the user's information
         user.username = user.username
         user.password = user.password
-        user.brewers = user.brewers + ["Moka Pot"]
-        user.grinder = user.brewers + ["Blade grinder"]
+        user.brewers = user.brewers  # + ["Moka Pot"]
+        user.grinder = user.brewers  # + ["Blade grinder"]
+        # Above comments just show how to add to array
         user.roaster = "Palace"
         db.session.commit()
         db.session.refresh(user)
         flask.flash("User information updated!")
     else:
-        print("Nothing")
+        return "Working on it"
 
 
-app.run(debug=True)
+@app.route("/update_post")
+def handle_post_update():
+    form_data = flask.request.form
+    post = Posts.query.get(1)
+    return "Working on it"
+
+
+@app.route("/post")
+def handle_post():
+    form_data = flask.request.form
+    now = datetime.datetime.now()
+    print("I am now")
+    print(now)
+    new_post = Posts(
+        username="Marty",
+        brewer="Chemex",
+        coarseness="26",
+        recipe=["Array given by form_data"],
+        roast_level="Light",
+        post_date=now,
+    )
+    db.session.add(new_post)
+    db.session.commit()
+    return "New post created"
+
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
