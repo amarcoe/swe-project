@@ -46,13 +46,14 @@ def handle_login():
 def handle_signup():
     # Will get information from signup.jsx
     form_data = flask.request.form
+    username = request.form["username"]
     # hashed_password = generate_password_hash(form_data["password"])
     new_user = Users(
-        username="dummy",
-        password="whatever",
-        brewers=["Chemex", "Aeropress", "Clever"],
-        grinder=["Baratza Encore, Fellow Ode"],
-        roaster="Eiland",
+        username=request.form["username"],
+        password=request.form["password"],
+        brewers=request.form["brewers"],
+        grinder=request.form["grinders"],
+        roaster=request.form["roasters"],
     )
     db.session.add(new_user)
     db.session.commit()
@@ -62,7 +63,7 @@ def handle_signup():
 @app.route("/update_user")
 def handle_user_update():
     form_data = flask.request.form
-    user = Users.query.get(1)
+    user = Users.query.get(request.form["username"])
     # Will be queried by username when I have actual form data
     if user:
         # Update the user's information
