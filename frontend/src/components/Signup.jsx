@@ -49,7 +49,6 @@ export const Signup = () => {
         const item = input.value;
         let formatted = item.charAt(0).toUpperCase() + item.slice(1)
 
-        
         setGrinders([...grinders, formatted]);
         input.value = ''
     }
@@ -62,6 +61,16 @@ export const Signup = () => {
         setBrewers([...brewers, formatted])
         input.value = ''
     }
+    function removeGrinder(index){
+        let arr = [...grinders]
+        arr.splice(index, 1)
+        setGrinders(arr)
+    }
+    function removeBrewer(index) {
+        let arr = [...brewers]
+        arr.splice(index, 1)
+        setBrewers(arr)
+    }
 
     function handleSubmission(event) {
         event.preventDefault()
@@ -71,10 +80,19 @@ export const Signup = () => {
         formData.append('password', password)
         formData.append('grinders', grinders)
         formData.append('brewers', brewers)
-
+        
         for (const [name, value] of formData.entries()) {
             console.log(`${name}: ${value}`);
         }
+
+        // actual fetch request to the server for user signup
+        fetch("http://localhost:5000/signup", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error))
 
     }
 
@@ -115,7 +133,7 @@ export const Signup = () => {
                 <button className="form-btn" onClick={handleAddGrinder}>Add</button>
                 <ul className="user-list">
                     {grinders.map((value, index) => (
-                        <li key={index}>{value}</li>
+                        <li key={index} >{value} <p className="del-btn" onClick={() => removeGrinder(index)}>&#10005;</p></li>
                     ))}
                 </ul>
 
@@ -125,7 +143,7 @@ export const Signup = () => {
                 <button className="form-btn" onClick={handleAddBrewer}>Add</button>
                 <ul>
                     {brewers.map((value, index) => (
-                        <li key={index}>{value}</li>
+                        <li key={index}>{value} <p className="del-btn" onClick={() => removeBrewer(index)}>&#10005;</p></li>
                     ))}
                 </ul>
                 <button className="sub-btn">Sign Up</button>
