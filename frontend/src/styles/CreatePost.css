@@ -7,6 +7,10 @@
     justify-content: space-around;
     align-items: flex-start;
     flex-wrap: wrap;
+    background-color: #B8BAC8;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 1rem;
 
 }
 .likert-scale{
@@ -17,6 +21,7 @@
     width: 80%; 
     border-bottom: 1px solid black;
     margin-bottom: 2rem;
+    
     
 }
 .rating{
@@ -30,6 +35,8 @@
 .relative-rating{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .rating-label{
     font-size: .85rem;
@@ -45,8 +52,16 @@
 }
 .section-container.last{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    width: 100%;
+    margin-top: 4rem;
+    position: relative;
+}
+.form__label.last{
+    position: absolute;
+    top: -4rem;
+    left: 8rem;
 }
 .item-list{
     height: 2rem;
@@ -66,6 +81,8 @@
 textarea{
     resize: none;
     width: 60%;
+    padding: .5rem;
+    border-radius: .25rem;
     margin-bottom: .5rem;
     font-family: 'Suwannaphum';
 }
@@ -112,8 +129,6 @@ textarea{
     cursor: pointer;
     font-size: 1rem;
     box-shadow: 10px 10px 22px -15px rgba(0,0,0,0.75);
-
-
 }
 .btn:hover{
     transform: translateY(2px);

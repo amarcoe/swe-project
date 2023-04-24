@@ -217,8 +217,8 @@ export const CreatePost = () => {
                     </div>
                 </div>
                 <div className="section">
-                    <div className="section-container">
-                    <label className="form__label">How did you like it? </label>
+                    <div className="section-container last">
+                    <label className="form__label last">How did you like it? </label>
                         
                         <div className="likert-scale">
                             {likertRating.map((option, index) => (

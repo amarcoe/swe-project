@@ -74,43 +74,43 @@ export const PostCard = (props) => {
                     </div>
                 </div>
             </div>
-            <CSSTransition nodeRef={nodeRef} in={show} timeout={1000} classNames="fade">
+            <CSSTransition nodeRef={nodeRef} in={show} timeout={1000} classNames="fade" unmountOnExit>
                 <div ref={nodeRef}>
-                    {show ? (
-                        <div className="post-body">
-                            <div className="post-section">
-                                <div className="post-info">
-                                    <h3>Brewer: {data.brewer}</h3>
-                                    <h3>Coarseness: {data.coarseness}</h3>
-                                    <h3>Roast: {data.roast}</h3>
-                                </div>
-                                <div className="post-info">
-                                    <h3>Rating: {data.rating} / 5</h3>
-                                </div>
+                    
+                    <div className="post-body">
+                        <div className="post-section">
+                            <div className="post-info">
+                                <h3>Brewer: {data.brewer}</h3>
+                                <h3>Coarseness: {data.coarseness}</h3>
+                                <h3>Roast: {data.roast}</h3>
                             </div>
-                            <div className="post-section">
-                                <h3>Recipe</h3>
-                                <ol className="recipe">
-                                    {data.recipe.map((value, index) =>(
-                                        <li value={value}>{value}</li>
-                                    ))
-                                    }
-                                </ol>
-                            </div>
-                            <div className="bookmark-container">
-                                {
-                                    hasBookmarked ? 
-                                    (
-                                        <h3><FontAwesomeIcon className="bookmark add" icon={faBookmark}  onClick={handleBookmarking}/></h3>
-                                    ):
-                                    (
-                                        <FontAwesomeIcon className="bookmark" icon={faBookmark}  onClick={handleBookmarking}/>
-                                    )
-                                }
-                                
+                            <div className="post-info">
+                                <h3>Rating: {data.rating} / 5</h3>
                             </div>
                         </div>
-                    ) : null}
+                        <div className="post-section">
+                            <h3>Recipe</h3>
+                            <ol className="recipe">
+                                {data.recipe.map((value, index) =>(
+                                    <li value={value} key={index}>{value}</li>
+                                ))
+                                }
+                            </ol>
+                        </div>
+                        <div className="bookmark-container">
+                            {
+                                hasBookmarked ? 
+                                (
+                                    <h3><FontAwesomeIcon className="bookmark add" icon={faBookmark}  onClick={handleBookmarking}/></h3>
+                                ):
+                                (
+                                    <FontAwesomeIcon className="bookmark" icon={faBookmark}  onClick={handleBookmarking}/>
+                                )
+                            }
+                            
+                        </div>
+                    </div>
+                    
                 </div>
             </CSSTransition>
         </div>

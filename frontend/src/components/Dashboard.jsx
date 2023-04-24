@@ -5,6 +5,7 @@ import { CSSTransition } from "react-transition-group";
 
 import "../styles/Dashboard.css"
 import { PostCard } from "./PostCard.jsx";
+import { FilterBy } from "./FilterBy.jsx";
 
 
 export const Dashboard = () => {
@@ -27,7 +28,7 @@ export const Dashboard = () => {
                 "Slowly pour the hot water over the coffee grounds, starting at the center and spiraling outward",
                 "Wait for the coffee to finish brewing, then remove the filter and discard the grounds"
             ], 
-            brewer: "Moka Pot",
+            brewer: "Chemex",
             grinder: "Default",
             coarseness: "Medium", 
             bookmarks: 5,
@@ -81,33 +82,23 @@ export const Dashboard = () => {
                     <div className="posting-container">
                     <button className="post-open" onClick={handleCreateToggle}>Create Post</button>
                 
-                    <CSSTransition nodeRef={nodeRef} in={showCreatePost} timeout={1000} classNames="fade">
+                    <CSSTransition nodeRef={nodeRef} in={showCreatePost} timeout={1000} classNames="fade" unmountOnExit>
                         <div ref={nodeRef}>
-                            {
-                                showCreatePost ?
-                                <CreatePost /> :null
-                            }
+                            <CreatePost />
                         </div>   
                     </CSSTransition>
                 
                     </div>
                     <div className="post-feed">
-                        {data.map((item, index) =>(
-                            <div className="post" key={index}>
-                                <PostCard data={item}/>
-                            </div>
-                        ))}
+                        <FilterBy data={data}/>
                     </div>
                 </div>
             }
             {activeTab === 3 &&
                 <div className="post-feed">
+
                     <h1>Bookmarked Posts</h1>
-                    {data.map((item, index) =>(
-                        <div className="post" key={index}>
-                            <PostCard data={item}/>
-                        </div>
-                    ))}
+                    <FilterBy data={data}/>
                 </div>
             }
             
