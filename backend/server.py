@@ -12,7 +12,6 @@ app = flask.Flask(__name__)
 CORS(app)
 app.secret_key = os.getenv("secret_key")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-
 login_manager = LoginManager()
 
 db.init_app(app)
@@ -27,16 +26,9 @@ def load_user(id):
 create_table(app)
 
 
-@app.route("/")
-def whatever():
-    # Will be home.jsx
-    return flask.redirect(flask.url_for("handle_post"))
-
-
 @app.route("/login")
 def handle_login():
-    form_data = flask.request.form
-    user = Users.authenticate("dummy", "anything")
+    user = Users.authenticate(request.form["username"], request.form["password"])
     # Will take username and password from form_data and run them through authenticate
     if user:
         login_user(user)
@@ -45,27 +37,25 @@ def handle_login():
         return "Information was incorrect"
 
 
-@app.route("/signup", methods=['POST'])
+@app.route("/signup", methods=["POST"])
 def handle_signup():
     # Will get information from signup.jsx
-    form_data = flask.request.form
-    username = request.form["username"]
-    # hashed_password = generate_password_hash(form_data["password"])
+    password = request.form["password"]
+    hashed_password = generate_password_hash(password)
     new_user = Users(
         username=request.form["username"],
-        password=request.form["password"],
+        password=hashed_password,
         brewers=request.form["brewers"],
         grinder=request.form["grinders"],
         roaster=request.form["roasters"],
     )
     db.session.add(new_user)
     db.session.commit()
-    return brewers
+    return hello
 
 
 @app.route("/update_user")
 def handle_user_update():
-    form_data = flask.request.form
     user = Users.query.get(request.form["username"])
     # Will be queried by username when I have actual form data
     if user:
@@ -85,25 +75,23 @@ def handle_user_update():
 
 @app.route("/update_post")
 def handle_post_update():
-    form_data = flask.request.form
     post = Posts.query.get(1)
     return "Working on it"
 
 
-@app.route("/post")
+@app.route("/create_post")
 def handle_post():
-    form_data = flask.request.form
     now = datetime.datetime.now()
-    print("I am now")
-    print(now)
     new_post = Posts(
-        username="Marty",
-        brewer="Chemex",
-        coarseness="26",
-        recipe=["Array given by form_data"],
-        roast_level="Light",
+        username=request.form["username"],
+        brewer=request.form["brewer"],
+        coarseness=request.form["coarseness"],
+        recipe=request.form["recipe"],
+        roast_level=request.form["roast_level"],
         post_date=now,
     )
+    user = Users.query.filter_by(username=request.form["username"]).first()
+    user.user_recipes.append(post.id)
     db.session.add(new_post)
     db.session.commit()
     return "New post created"
