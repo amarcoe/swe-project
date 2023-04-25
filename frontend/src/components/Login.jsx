@@ -26,7 +26,17 @@ export const Login = () => {
 			body: formData
 		})
 		.then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => 
+			{	
+				console.log(data)
+				if(data.userID){
+					localStorage.setItem("userID", data.userID)
+					window.location.href = "/dashboard"
+				}
+				else{
+					alert("Failed to authenticate")
+				}
+			})
         .catch(error => console.error(error))
     }
     const content = (

@@ -144,8 +144,6 @@ export const FilterBy = (props) => {
                         </select>
                         <div className="small-box" id="roast-color"></div>
                     </div>
-                    
-
                 </div>
 
             </CSSTransition>

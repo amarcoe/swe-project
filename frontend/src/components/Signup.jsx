@@ -71,7 +71,8 @@ export const Signup = () => {
         arr.splice(index, 1)
         setBrewers(arr)
     }
-
+    
+    const [isSuccess, setSuccess] = useState(false)
     function handleSubmission(event) {
         event.preventDefault()
         const formData = new FormData();
@@ -91,11 +92,18 @@ export const Signup = () => {
             body: formData
         })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            
+            console.log(data)
+            if(data.message === "success"){
+                window.location.href = "/login"
+            }
+        
+        })
         .catch(error => console.error(error))
 
     }
-
+    
     const content = (
         <div className="form-container">
             <form className="form" onSubmit={handleSubmission}>

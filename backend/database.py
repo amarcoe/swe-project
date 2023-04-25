@@ -24,6 +24,7 @@ class Posts(db.Model):
     # Think it will be an array added to with each current_user
     post_date = db.Column(db.String(80), nullable=False, unique=False)
     # I'll just use datetime to pass this information in the backend
+    rating = db.column(db.Integer(), nullable=False, unique=False)
 
 
 #     Author ID

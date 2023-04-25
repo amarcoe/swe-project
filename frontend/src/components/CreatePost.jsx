@@ -1,21 +1,19 @@
 import React, {useState, useEffect} from "react"
 
 import '../styles/CreatePost.css'
+import { useNavigate } from "react-router-dom"
 
-export const CreatePost = () => {
 
-    const dummyUser = {
-        username: "dummy",
-        brewers: ["Chemex", "Aeropress", "Clever"],
-        grinders: ["Baratza Encore", "Fellow Ode"],
-        roaster: "Eiland"
-    }
+export const CreatePost = (props) => {
+    const navigate = useNavigate();
+
+    const user = props.user
     // Equipment Handlers
     const [selectedGrinder, setSelectedGrinder] = useState('default')
     const handleChangeGrinder = (event) => {
         setSelectedGrinder(event.target.value)
     }
-    const [selectedBrewer, setSelectedBrewer] = useState(dummyUser.brewers[0])
+    const [selectedBrewer, setSelectedBrewer] = useState(user.brewers[0])
     const handleChangeBrewer = (event) => {
         setSelectedBrewer(event.target.value)
     }
@@ -69,12 +67,12 @@ export const CreatePost = () => {
         const values = [...recipeFields]
         values.splice(index, 1)
         setFields(values);
-
     }
     const handleSubmit = (event) => {
         event.preventDefault()
         const formData = new FormData();
 
+        formData.append('author', user.userID)
         formData.append('grinder', selectedGrinder)
         formData.append('coarseness', coarseness)
         formData.append('brewer', selectedBrewer)
@@ -127,10 +125,17 @@ export const CreatePost = () => {
         setRating(event.target.value)
     }
 
+    function handleClick() {
+        localStorage.removeItem('userID');
+        navigate("/login")
+      }
+
         // dark: #FD3A00 med: #684E32, light: #F9EA9A
     const content = (
 
         <div className="post-form-container">
+                <button onClick={handleClick}>Clear Local Storage</button>
+
             <form action="" onSubmit={handleSubmit}>
                 <div className="section">
                     <div className="section-container">
@@ -142,7 +147,7 @@ export const CreatePost = () => {
                         </label>
                         <select className="item-list" onChange={handleChangeGrinder}>
                             <option value="default">Default Scale</option>
-                            {dummyUser.grinders.map((grinder, index) => (
+                            {user.grinders.map((grinder, index) => (
                                 <option key={index} value={grinder}>{grinder}</option>
                             ))}
                         </select>
@@ -179,7 +184,7 @@ export const CreatePost = () => {
                             Brewer: 
                         </label>
                         <select className="item-list" onChange={handleChangeBrewer}>
-                            {dummyUser.brewers.map((brewer, index) => (
+                            {user.brewers.map((brewer, index) => (
                                 <option key={index} value={brewer}>{brewer}</option>
                             ))}
                         </select>
@@ -226,7 +231,7 @@ export const CreatePost = () => {
                                     <input 
                                         type="radio"
                                         id={`options${index}`}
-                                        name="likertScale"
+                                        name="relativeScale"
                                         value={option.value}
                                         checked={rating == option.value}
                                         onChange={handleChangeRating}

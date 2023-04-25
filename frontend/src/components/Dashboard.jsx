@@ -1,4 +1,4 @@
-import {useState, useRef} from "react"
+import {useState, useRef, useEffect} from "react"
 
 import { CreatePost } from "./CreatePost.jsx";
 import { CSSTransition } from "react-transition-group";
@@ -9,11 +9,28 @@ import { FilterBy } from "./FilterBy.jsx";
 
 
 export const Dashboard = () => {
+    const [user, setUser] = useState({})
+    
+
+    useEffect(() => {
+        const id = localStorage.getItem("userID")
+        fetch(`http://localhost:5000/get-current-user?id=${id}`, {
+            method: "GET",
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            setUser(data)
+        })
+        .catch(error => console.error(error))
+    },[])
+
     const nodeRef = useRef(null)
     const [showCreatePost, setShowCreate] = useState(false)
     const handleCreateToggle = () => {
         setShowCreate(!showCreatePost)
     }
+
 
     const data = [
         {
@@ -69,7 +86,7 @@ export const Dashboard = () => {
             </div>
             {activeTab === 1 &&
                 <div className="post-feed">
-                    <h1>Your Posts</h1>
+                    <h1>{user.username}'s' Posts</h1>
                     {data.map((item, index) =>(
                         <div className="post" key={index}>
                             <PostCard data={item}/>
@@ -84,7 +101,12 @@ export const Dashboard = () => {
                 
                     <CSSTransition nodeRef={nodeRef} in={showCreatePost} timeout={1000} classNames="fade" unmountOnExit>
                         <div ref={nodeRef}>
-                            <CreatePost />
+                            {user ? (
+                                <CreatePost user={user}/>
+                            ) : (
+                                <CreatePost />
+                            )}
+                            
                         </div>   
                     </CSSTransition>
                 
