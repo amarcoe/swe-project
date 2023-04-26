@@ -16,21 +16,8 @@ class Posts(db.Model):
     recipe = db.Column(db.ARRAY(db.String(1000)), nullable=True, unique=False)
     roast_level = db.Column(db.String(80), nullable=False, unique=False)
     bookmarked = db.Column(db.ARRAY(db.String(80)), nullable=True, unique=False)
-    # Think it will be an array added to with each current_user
     post_date = db.Column(db.String(80), nullable=False, unique=False)
-    # I'll just use datetime to pass this information in the backend
     rating = db.Column(db.Integer, nullable=False, unique=False)
-
-
-# Author ID
-# Roaster (optional)
-# Brewer (required)
-# Coarseness (optional)
-# If coarseness, then what grinder did you use?
-# Recipe Make it an array, each step is an index
-# Roast Level
-# List of users who have bookmarked it
-# Date of post
 
 
 class Users(db.Model, UserMixin):
@@ -43,12 +30,6 @@ class Users(db.Model, UserMixin):
     roaster = db.Column(db.String(100), nullable=True, unique=False)
     bookmarked_recipes = db.Column(db.ARRAY(db.Integer), nullable=True, unique=False)
     user_recipes = db.Column(db.ARRAY(db.Integer), nullable=True, unique=False)
-
-    # user = Users.query.filter_by(username=username).first()
-    # bookmarked_posts = Posts.query.filter(Posts.id.in_(user.bookmarked_recipes)).all()
-    # user_posts = Posts.query.filter(Posts.id.in_(user.user_recipes)).all()
-    # I'm not sure when bookmarked_recipes will be updated and I wrote when user_recipes will be
-    # The lines above will query posts by what the recipes columns are storing
 
     def authenticate(username, password):
         user = Users.query.filter_by(username=username).first()
