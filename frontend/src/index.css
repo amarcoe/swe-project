@@ -7,8 +7,8 @@
   
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background: rgb(226,216,38);
-  background: linear-gradient(0deg, rgba(226,216,38,0.5382830626450116) 0%, rgba(249,234,154,1) 51%);
+  
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -26,12 +26,17 @@ a:hover {
 }
 
 body {
-  margin: 0;
+  
   display: flex;
-  place-items: center;
+  align-items: flex-start;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
+  background: rgba(226,216,38,0.5382830626450116);
+  background: linear-gradient(0deg, rgba(226,216,38,0.5382830626450116) 0%, rgba(249,234,154,1) 51%);
+  background-attachment: fixed;
+  
 }
 
 h1 {

@@ -71,7 +71,8 @@ export const Signup = () => {
         arr.splice(index, 1)
         setBrewers(arr)
     }
-
+    
+    const [isSuccess, setSuccess] = useState(false)
     function handleSubmission(event) {
         event.preventDefault()
         const formData = new FormData();
@@ -86,16 +87,23 @@ export const Signup = () => {
         }
 
         // actual fetch request to the server for user signup
-        fetch("http://localhost:5000/signup", {
+        fetch("https://little-water-7513.fly.dev/signup", {
             method: "POST",
             body: formData
         })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            
+            console.log(data)
+            if(data.message === "success"){
+                window.location.href = "/login"
+            }
+        
+        })
         .catch(error => console.error(error))
 
     }
-
+    
     const content = (
         <div className="form-container">
             <form className="form" onSubmit={handleSubmission}>

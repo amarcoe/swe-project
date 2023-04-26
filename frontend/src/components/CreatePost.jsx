@@ -1,21 +1,19 @@
 import React, {useState, useEffect} from "react"
 
 import '../styles/CreatePost.css'
+import { useNavigate } from "react-router-dom"
 
-export const CreatePost = () => {
 
-    const dummyUser = {
-        username: "dummy",
-        brewers: ["Chemex", "Aeropress", "Clever"],
-        grinders: ["Baratza Encore", "Fellow Ode"],
-        roaster: "Eiland"
-    }
+export const CreatePost = (props) => {
+    const navigate = useNavigate();
+
+    const user = props.user
     // Equipment Handlers
     const [selectedGrinder, setSelectedGrinder] = useState('default')
     const handleChangeGrinder = (event) => {
         setSelectedGrinder(event.target.value)
     }
-    const [selectedBrewer, setSelectedBrewer] = useState(dummyUser.brewers[0])
+    const [selectedBrewer, setSelectedBrewer] = useState()
     const handleChangeBrewer = (event) => {
         setSelectedBrewer(event.target.value)
     }
@@ -30,6 +28,28 @@ export const CreatePost = () => {
         { label: "Medium", value: 3},
         { label: "Medium Fine", value: 4},
         { label: "Fine", value: 5},
+    ]
+    const likertRating = [
+        {
+            label: "Strongly Dislike",
+            value: 1
+        },
+        {
+            label: "Dislike", 
+            value: 2
+        },
+        {
+            label: "Eh", 
+            value: 3
+        },
+        {
+            label: "Like", 
+            value: 4
+        },
+        {
+            label: "Strongly Like", 
+            value: 5
+        }
     ]
     
     // Recipe Handlers
@@ -47,18 +67,46 @@ export const CreatePost = () => {
         const values = [...recipeFields]
         values.splice(index, 1)
         setFields(values);
-
     }
     const handleSubmit = (event) => {
         event.preventDefault()
+        const formData = new FormData();
+        console.log(user.id)
 
-        const values = recipeFields.map((input) => input.value)
-        console.log(values)
+        formData.append('username', user.username)
+        formData.append('grinder', selectedGrinder)
+        formData.append('coarseness', coarseness)
+        formData.append('brewer', selectedBrewer)
+        formData.append('roast', roast)
+        formData.append('rating', rating)
+
+        let recipeArray = []
+        
+        recipeFields.map((value, index) => {
+            
+            console.log(recipeFields[index].value)
+            recipeArray.push(recipeFields[index].value)
+            
+        })
+       
+        formData.append('recipe', recipeArray)
+
+        /* for (const [name, value] of formData.entries()) {
+            console.log(`${name}: ${value}`);
+        } */
+       
+        fetch("https://little-water-7513.fly.dev/post", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error)) 
     }
     const handleChange = (index, event) => {
         const values = [...recipeFields];
         values[index].value = event.target.value
-        console.log(values)
+        
         setFields(values)
     }
 
@@ -82,13 +130,26 @@ export const CreatePost = () => {
         }
     },[roast])
 
+    // Rating Handlers
+    const [rating, setRating] = useState(0)
+    const handleChangeRating = (event) => {
+        setRating(event.target.value)
+    }
+
+    function handleClick() {
+        localStorage.removeItem('userID');
+        navigate("/login")
+      }
+
         // dark: #FD3A00 med: #684E32, light: #F9EA9A
     const content = (
 
         <div className="post-form-container">
+            <button onClick={handleClick}>Clear Local Storage</button>
+
             <form action="" onSubmit={handleSubmit}>
                 <div className="section">
-                    <div className="grinder-container">
+                    <div className="section-container">
                         <label 
                             className="form__label"
                             htmlFor="grinders"
@@ -97,7 +158,7 @@ export const CreatePost = () => {
                         </label>
                         <select className="item-list" onChange={handleChangeGrinder}>
                             <option value="default">Default Scale</option>
-                            {dummyUser.grinders.map((grinder, index) => (
+                            {user.grinders?.map((grinder, index) => (
                                 <option key={index} value={grinder}>{grinder}</option>
                             ))}
                         </select>
@@ -126,7 +187,7 @@ export const CreatePost = () => {
                         }
                         </div>
                     </div>
-                    <div className="grinder-container">
+                    <div className="section-container">
                         <label 
                             className="form__label"
                             htmlFor="brewers"
@@ -134,14 +195,16 @@ export const CreatePost = () => {
                             Brewer: 
                         </label>
                         <select className="item-list" onChange={handleChangeBrewer}>
-                            {dummyUser.brewers.map((brewer, index) => (
+                            <option value="default" default>Default</option>
+
+                            {user.brewers?.map((brewer, index) => (
                                 <option key={index} value={brewer}>{brewer}</option>
                             ))}
                         </select>
                     </div>
                 </div>
                 <div className="section">
-                    <div className="grinder-container">
+                    <div className="section-container">
                         <label className="form__label">Recipe: </label>
                         {recipeFields.map((input, index) =>(
                             <div className="input-fields" key={index}>
@@ -160,7 +223,7 @@ export const CreatePost = () => {
                         ))}
                         <button className="btn" type="button" onClick={() => handleAddFields()}>&#65291;</button>
                     </div>
-                    <div className="grinder-container">
+                    <div className="section-container">
                         <label className="form__label">Roast Level:</label>
                         <select className="item-list" onChange={handleChangeRoast}>
                             <option default>--Select Roast--</option>
@@ -169,6 +232,27 @@ export const CreatePost = () => {
                             ))}
                         </select>
                         <div className="small-box" id="roast-color"></div>
+                    </div>
+                </div>
+                <div className="section">
+                    <div className="section-container last">
+                    <label className="form__label last">How did you like it? </label>
+                        
+                        <div className="likert-scale">
+                            {likertRating.map((option, index) => (
+                                <div className="relative-rating" key={index}>
+                                    <input 
+                                        type="radio"
+                                        id={`options${index}`}
+                                        name="relativeScale"
+                                        value={option.value}
+                                        checked={rating == option.value}
+                                        onChange={handleChangeRating}
+                                    />
+                                    <label htmlFor={`option${index}`} className="rating-label"> {option.label}</label>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
                 <button className="post-btn" type="submit">Post</button>

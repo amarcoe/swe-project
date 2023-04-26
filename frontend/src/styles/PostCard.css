@@ -1,0 +1,113 @@
+.post-container{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    background: #ffea76;
+    color: black;
+    border-radius: 1rem;
+    padding: 1rem;
+    color: black;
+}
+.post-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    cursor: pointer;
+    background-color: #B8BAC8;
+    box-shadow: 10px 10px 17px -13px rgba(0,0,0,0.75);
+
+    border-radius: 1rem;
+    color: rgb(0, 0, 0);
+    padding: .2rem;
+}
+.box{
+    border-radius: 1rem;
+    width: 10rem;
+    height: 2rem;
+    margin-left: 2rem;
+    border: solid black 1px;
+}
+.post-header-info{
+    margin: 1rem;
+    height: 5rem;
+    width: 33%;
+}
+.dense{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:right;
+    align-items:flex-end;
+    height: 5rem;
+    position: relative
+}
+.dense-left{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 50%;
+    position: absolute;
+    top: -1.5rem; 
+    right: 0;
+    
+}
+.bookmark{
+    font-size: 2rem;
+    cursor: pointer;
+    color: rgb(20, 20, 20);
+    text-decoration: line-through;
+    cursor: pointer;
+}
+.bookmark:hover{
+    transform: translateY(.5rem);
+    
+    color: green;
+}
+.bookmark.add{
+    color: green;
+}
+.bookmark.add:hover{
+    color: red;
+}
+.icon-text{
+    font-size: 3rem;
+}
+.post-body{
+    display: flex;
+    justify-content: space-evenly;
+    position: relative;
+    margin-bottom: 2rem;
+    transition: height 2s ease-out;
+}
+
+.bookmark-container{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.post-section{
+    background-color: #f2f4f3;
+    width: 40%;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    box-shadow: 17px 22px 37px -17px rgba(0,0,0,0.75);
+    text-align: left;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+
+}
+.post-info{
+    text-align: left;  
+    display: flex;
+    flex-direction: column; 
+    width: 15rem;
+}
+.recipe{
+    width: 20rem;
+    text-align: left;
+    
+}

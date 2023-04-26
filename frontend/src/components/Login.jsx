@@ -21,7 +21,23 @@ export const Login = () => {
 		formData.append('username', username)
 		formData.append('password', password)
 
-		fetch("http://localhost:5000/signup")
+		fetch("https://little-water-7513.fly.dev/login", {
+			method: "POST",
+			body: formData
+		})
+		.then(response => response.json())
+        .then(data => 
+			{	
+				console.log(data)
+				if(data.username){
+					localStorage.setItem("username", data.username)
+					window.location.href = "/dashboard"
+				}
+				else{
+					alert("Failed to authenticate")
+				}
+			})
+        .catch(error => console.error(error))
     }
     const content = (
         <div className="form-container">
