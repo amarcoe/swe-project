@@ -14,7 +14,7 @@ Jonathan:
 
 Alex: 
 - https://github.com/amarcoe/swe-project/pull/3
-- 
+- https://github.com/amarcoe/swe-project/pull/7
 
 # Things we learned
 - I learned how to manage and convert data in python and javascript, the translation between those langauages when dealing with things like arrays vs lists vs dictionaries can make things difficult sometimes
