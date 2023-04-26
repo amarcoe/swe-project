@@ -13,7 +13,7 @@ export const CreatePost = (props) => {
     const handleChangeGrinder = (event) => {
         setSelectedGrinder(event.target.value)
     }
-    const [selectedBrewer, setSelectedBrewer] = useState(user.brewers[0])
+    const [selectedBrewer, setSelectedBrewer] = useState()
     const handleChangeBrewer = (event) => {
         setSelectedBrewer(event.target.value)
     }
@@ -71,26 +71,38 @@ export const CreatePost = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault()
         const formData = new FormData();
+        console.log(user.id)
 
-        formData.append('author', user.userID)
+        formData.append('username', user.username)
         formData.append('grinder', selectedGrinder)
         formData.append('coarseness', coarseness)
         formData.append('brewer', selectedBrewer)
-        formData.append('recipe', recipeFields)
         formData.append('roast', roast)
         formData.append('rating', rating)
 
-        for (const [name, value] of formData.entries()) {
+        let recipeArray = []
+        
+        recipeFields.map((value, index) => {
+            
+            console.log(recipeFields[index].value)
+            recipeArray.push(recipeFields[index].value)
+            
+        })
+       
+        console.log(recipeArray)
+        formData.append('recipe', recipeArray)
+
+        /* for (const [name, value] of formData.entries()) {
             console.log(`${name}: ${value}`);
-        }
-        console.log(recipeFields)
+        } */
+       
         fetch("http://localhost:5000/post", {
             method: "POST",
             body: formData
         })
         .then(response => response.json())
         .then(data => console.log(data))
-        .catch(error => console.error(error))
+        .catch(error => console.error(error)) 
     }
     const handleChange = (index, event) => {
         const values = [...recipeFields];
@@ -134,7 +146,7 @@ export const CreatePost = (props) => {
     const content = (
 
         <div className="post-form-container">
-                <button onClick={handleClick}>Clear Local Storage</button>
+            <button onClick={handleClick}>Clear Local Storage</button>
 
             <form action="" onSubmit={handleSubmit}>
                 <div className="section">
@@ -147,7 +159,7 @@ export const CreatePost = (props) => {
                         </label>
                         <select className="item-list" onChange={handleChangeGrinder}>
                             <option value="default">Default Scale</option>
-                            {user.grinders.map((grinder, index) => (
+                            {user.grinders?.map((grinder, index) => (
                                 <option key={index} value={grinder}>{grinder}</option>
                             ))}
                         </select>
@@ -184,7 +196,9 @@ export const CreatePost = (props) => {
                             Brewer: 
                         </label>
                         <select className="item-list" onChange={handleChangeBrewer}>
-                            {user.brewers.map((brewer, index) => (
+                            <option value="default" default>Default</option>
+
+                            {user.brewers?.map((brewer, index) => (
                                 <option key={index} value={brewer}>{brewer}</option>
                             ))}
                         </select>

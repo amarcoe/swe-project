@@ -1,6 +1,7 @@
 import os
 import flask
 import requests
+import json
 import datetime
 from database import create_table, Users, db, Posts
 from flask import request, make_response, jsonify
@@ -19,14 +20,11 @@ login_manager = LoginManager()
 db.init_app(app)
 login_manager.init_app(app)
 
-
 @login_manager.user_loader
 def load_user(id):
     return Users.query.get(id)
 
-
 create_table(app)
-
 
 @app.route("/signup", methods=['POST'])
 def signup():
@@ -42,11 +40,14 @@ def signup():
     # generate_password_hash(form_data[password])
     # Just a dummy password to test against, will drop table don't take off points
     hashed_password = generate_password_hash(password)
+    brewer_list = brewers.split(",")
+    grinder_list = grinders.split(",")
+
     new_user = Users(
         username= username,
         password=hashed_password,
-        brewers=[brewers],
-        grinder=[grinders],
+        brewers=brewer_list,
+        grinder=grinder_list,
     )
     print(new_user.username)
 
@@ -61,16 +62,36 @@ def signup():
 
 @app.route("/get-current-user", methods=['GET'])
 def get_current_user():
-    userID = request.args['id']
+    user_name = request.args['username']
     
-    user_data = Users.query.get(userID)
-
+    user_data = Users.query.filter_by(username=user_name).first()
+    posts = Posts.query.filter(Posts.username == user_name).all()
+    print(posts)
     if user_data:
+        
+        posts_list = []
+        for post in posts:
+            post_dict = {
+                "id": post.id,
+                'username': post.username,
+                "coarseness": post.coarseness,
+                "brewer": post.brewer, 
+                "roast": post.roast_level,
+                "rating": post.rating,
+                "recipe": post.recipe, 
+                "rating": post.rating, 
+                "bookmarked": post.bookmarked,
+                "post_date": post.post_date 
+            }
+            posts_list.append(post_dict)
+        
+
         user_dict = {
             "username": user_data.username,
             "grinders": user_data.grinder,
             "brewers": user_data.brewers,
-
+            "id": user_data.id,
+            "user_posts": posts_list, 
         }
         res = make_response(jsonify(user_dict))
         res.status_code = 200
@@ -78,8 +99,6 @@ def get_current_user():
     else:
         res = make_response(jsonify({"message": "User not found"}))
 
-
-#
 @app.route("/login", methods=['POST'])
 def handle_login():
     form_data = flask.request.form
@@ -89,8 +108,7 @@ def handle_login():
     # Will take username and password from form_data and run them through authenticate
     if user:
         login_user(user)
-        print(user.id)
-        res = make_response(jsonify({"userID": user.id}))
+        res = make_response(jsonify({"username": user.username}))
         res.status_code = 200
         return res
     else:
@@ -98,22 +116,78 @@ def handle_login():
         res.status_code = 403
         return res
 
+@app.route("/get-posts", methods=["GET"])
+def get_posts():
+    all_posts = Posts.query.all()
+    posts_list = []
+    for post in all_posts:
+        post_dict = {
+            'id': post.id,
+            'username': post.username,
+            "coarseness": post.coarseness,
+            "brewer": post.brewer, 
+            "roast": post.roast_level,
+            "rating": post.rating,
+            "recipe": post.recipe, 
+            "rating": post.rating, 
+            "bookmarked": post.bookmarked,
+            "post_date": post.post_date
+        }
+        posts_list.append(post_dict)
+    return posts_list
+
+@app.route("/update-bookmark", methods=["PUT"])
+def handle_bookmarks():
+    try:
+        data = request.get_json() # get the JSON data from the request body
+        pid = data.get('pid') # get the pid value from the JSON data
+        user = data.get('user') # get the uid value from the JSON data
+        post = Posts.query.filter(Posts.id == pid).first()
+        print(post.bookmarked)
+        
+        print(user not in post.bookmarked)
+        if user not in post.bookmarked:
+            post.bookmarked = post.bookmarked + [user]
+        
+        else:
+            post.bookmarked.remove(user)
+
+        print(post.bookmarked)
+        res = make_response(jsonify({"bookmarked": post.bookmarked}))
+
+        db.session.add(post)
+        db.session.commit()
+        db.session.refresh(post)
+        print("post.bookmarked after commit/refresh ")
+        print(post.bookmarked)
+
+        #res = make_response(jsonify({"bookmarked": post.bookmarked}))
+        return res
+    except:
+        return jsonify({'message': 'Invalid JSON data in request.'}), 400
+
 @app.route("/post", methods=["POST"])
 def handle_post():
     form_data = flask.request.form
-    print(form_data)
+    now = datetime.now()
+    
+    recipe_list = form_data["recipe"].split(",")
     new_post = Posts(
         username=form_data["username"],
         brewer=form_data["brewer"],
         coarseness=form_data["coarseness"],
-        recipe=form_data["recipe"],
+        recipe=recipe_list,
         roast_level=form_data["roast"],
-        bookmarked=[]
-        post_date='01/01/2000',
+        bookmarked=[],
+        post_date=now,
+        rating=form_data['rating']
     )
+    print(type(new_post.recipe))
     db.session.add(new_post)
     db.session.commit()
-    return "New post created"
+    
+    res = make_response({'Message:': "Post successful"})
+    return res
 
 @app.route("/update")
 def update_user():

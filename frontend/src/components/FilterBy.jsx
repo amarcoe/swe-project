@@ -15,7 +15,7 @@ export const FilterBy = (props) => {
         roaster: "Eiland"
     }
 
-    const [brewer, setBrewer] = useState('')
+    const [brewer, setBrewer] = useState("")
     const [grinder, setGrinder] = useState("default")
     const [roast, setRoast] = useState('')
     const [coarseness, setCoarseness] = useState(0)
@@ -33,7 +33,6 @@ export const FilterBy = (props) => {
     }
     const handleChangeBrewer = (event) => {
         setBrewer(event.target.value)
-
     }
 
     const roastLevels = ["Light", "Medium", "Dark"]
@@ -92,7 +91,7 @@ export const FilterBy = (props) => {
                         </label>
                         <select className="item-list" onChange={handleChangeGrinder}>
                             <option value="default">Default Scale</option>
-                            {dummyUser.grinders.map((grinder, index) => (
+                            {props.user.grinders?.map((grinder, index) => (
                                 <option key={index} value={grinder}>{grinder}</option>
                             ))}
                         </select>
@@ -156,7 +155,7 @@ export const FilterBy = (props) => {
             (
                 filtered.map((item, index) =>(
                     <div className="post" key={index}>
-                        <PostCard data={item}/>
+                        <PostCard data={item} user={props.user}/>
                     </div>
                 ))
             )
@@ -164,7 +163,7 @@ export const FilterBy = (props) => {
             (
                 props.data.map((item, index) =>(
                     <div className="post" key={index}>
-                        <PostCard data={item}/>
+                        <PostCard data={item} user={props.user}/>
                     </div>
                 ))
             )

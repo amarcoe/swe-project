@@ -3,32 +3,48 @@ import '../styles/PostCard.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { CSSTransition } from "react-transition-group";
 
 
 export const PostCard = (props) => {
     const nodeRef = useRef(null)
     const data = props.data
-    const username = "Chuck"
+    console.log(data)
+    console.log(props.user)
+    const [user, setUser] = useState(props.user)
+
+    
 
     const [show, setShow] = useState(false)
     const handleHeaderClick = () => {
         setShow(!show)
     }
 
-    const [bookmarks, setBookmarks] = useState(data.bookmarks)
+    const [bookmarks, setBookmarks] = useState(data.bookmarked.length)
     const handleBookmarking = () => {
-
-        if(data.usersBookmarked.includes(username)){
-            const index = data.usersBookmarked.indexOf(username)
-            data.usersBookmarked.splice(index, 1)
-            setBookmarks(bookmarks - 1)
-        } else{
-            data.usersBookmarked.push(username)
-            setBookmarks(bookmarks + 1)
-
+        
+        const username = props.user.username
+        const postId = props.data.id
+        const options = {
+            method:"PUT",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                pid: postId,
+                user: username
+            })
         }
+        fetch(`http://localhost:5000/update-bookmark`, options
+        )
+        .then(response => response.json())
+        .then(result => {
+            console.log(result.bookmarked)
+            setBookmarks(result.bookmarked.length)
+        })  
+        .catch(error => console.error(error))
+
     } 
+   
     
    
     function getRoastColor(){
@@ -42,24 +58,13 @@ export const PostCard = (props) => {
     
         }
     }
-    
-    const [hasBookmarked, setHasBookmarked] = useState(false)
-    useEffect(() => {
-        const index = data.usersBookmarked.indexOf(username)
-        if (index !== -1){
-            setHasBookmarked(true)
-        }else {
-            setHasBookmarked(false)
-        }
-    }, [bookmarks])
-
     const roastColor = getRoastColor(data.roast)
     
     const content = (
         <div className="post-container">
             <div className='post-header' onClick={handleHeaderClick}>
                 <div className="post-header-info">
-                    <h2>{data.user}</h2>
+                    <h2>{data.username}</h2>
                 </div>
                 <div className="post-header-info">
                     <h2>{data.brewer}</h2>
@@ -67,7 +72,7 @@ export const PostCard = (props) => {
                 <div className="post-header-info">
                     <div className="dense">
                         <div className="dense-left">
-                            <h3>{data.rating} / 5</h3>
+                            <h3><FontAwesomeIcon icon={faStar} /> {data.rating} / 5</h3>
                             <h3><FontAwesomeIcon icon={faBookmark} /> {bookmarks}</h3>
                         </div>
                         <div className="box" style={{backgroundColor: getRoastColor()}}></div> 
@@ -98,16 +103,9 @@ export const PostCard = (props) => {
                             </ol>
                         </div>
                         <div className="bookmark-container">
-                            {
-                                hasBookmarked ? 
-                                (
-                                    <h3><FontAwesomeIcon className="bookmark add" icon={faBookmark}  onClick={handleBookmarking}/></h3>
-                                ):
-                                (
-                                    <FontAwesomeIcon className="bookmark" icon={faBookmark}  onClick={handleBookmarking}/>
-                                )
-                            }
                             
+                            <h3><FontAwesomeIcon className="bookmark add" icon={faBookmark}  onClick={handleBookmarking}/></h3>
+
                         </div>
                     </div>
                     

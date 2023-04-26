@@ -29,8 +29,8 @@ export const Login = () => {
         .then(data => 
 			{	
 				console.log(data)
-				if(data.userID){
-					localStorage.setItem("userID", data.userID)
+				if(data.username){
+					localStorage.setItem("username", data.username)
 					window.location.href = "/dashboard"
 				}
 				else{

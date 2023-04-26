@@ -15,14 +15,14 @@ class Posts(db.Model):
     coarseness = db.Column(db.String(80), nullable=True, unique=False)
     recipe = db.Column(db.ARRAY(db.String(1000)), nullable=True, unique=False)
     roast_level = db.Column(db.String(80), nullable=False, unique=False)
-    bookmarked = db.Column(db.ARRAY(db.String(80)))
+    bookmarked = db.Column(db.ARRAY(db.String(80)), nullable=True, unique=False)
     # Think it will be an array added to with each current_user
     post_date = db.Column(db.String(80), nullable=False, unique=False)
     # I'll just use datetime to pass this information in the backend
-    rating = db.column(db.Integer(), nullable=False, unique=False)
+    rating = db.Column(db.Integer, nullable=False, unique=False)
 
 
-#     Author ID
+# Author ID
 # Roaster (optional)
 # Brewer (required)
 # Coarseness (optional)
