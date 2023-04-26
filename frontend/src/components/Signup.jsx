@@ -87,7 +87,7 @@ export const Signup = () => {
         }
 
         // actual fetch request to the server for user signup
-        fetch("http://localhost:5000/signup", {
+        fetch("https://little-water-7513.fly.dev/signup", {
             method: "POST",
             body: formData
         })

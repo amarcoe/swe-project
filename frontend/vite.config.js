@@ -7,6 +7,6 @@ export default defineConfig({
   server: {
     host: true,
     strictPort: true, 
-    post: 8080
+    port: 8080
   }
 })

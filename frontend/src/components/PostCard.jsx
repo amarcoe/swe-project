@@ -10,8 +10,6 @@ import { CSSTransition } from "react-transition-group";
 export const PostCard = (props) => {
     const nodeRef = useRef(null)
     const data = props.data
-    console.log(data)
-    console.log(props.user)
     const [user, setUser] = useState(props.user)
 
     
@@ -26,6 +24,7 @@ export const PostCard = (props) => {
         
         const username = props.user.username
         const postId = props.data.id
+        
         const options = {
             method:"PUT",
             headers: {'Content-Type': 'application/json'},
@@ -34,7 +33,7 @@ export const PostCard = (props) => {
                 user: username
             })
         }
-        fetch(`http://localhost:5000/update-bookmark`, options
+        fetch(`https://little-water-7513.fly.dev/update-bookmark`, options
         )
         .then(response => response.json())
         .then(result => {

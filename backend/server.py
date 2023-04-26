@@ -144,22 +144,18 @@ def handle_bookmarks():
         user = data.get('user') # get the uid value from the JSON data
         post = Posts.query.filter(Posts.id == pid).first()
         print(post.bookmarked)
-        
-        print(user not in post.bookmarked)
-        if user not in post.bookmarked:
-            post.bookmarked = post.bookmarked + [user]
-        
+        book_array = post.bookmarked
+        print(user not in book_array)
+        if user not in book_array:
+            book_array = book_array + [user]
         else:
-            post.bookmarked.remove(user)
+            book_array.remove(user)
+        print(book_array)
+        res = make_response(jsonify({"bookmarked": book_array}))
 
-        print(post.bookmarked)
-        res = make_response(jsonify({"bookmarked": post.bookmarked}))
-
-        db.session.add(post)
         db.session.commit()
-        db.session.refresh(post)
-        print("post.bookmarked after commit/refresh ")
-        print(post.bookmarked)
+       
+        
 
         #res = make_response(jsonify({"bookmarked": post.bookmarked}))
         return res

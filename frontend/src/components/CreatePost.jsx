@@ -89,14 +89,13 @@ export const CreatePost = (props) => {
             
         })
        
-        console.log(recipeArray)
         formData.append('recipe', recipeArray)
 
         /* for (const [name, value] of formData.entries()) {
             console.log(`${name}: ${value}`);
         } */
        
-        fetch("http://localhost:5000/post", {
+        fetch("https://little-water-7513.fly.dev/post", {
             method: "POST",
             body: formData
         })

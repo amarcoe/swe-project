@@ -21,7 +21,7 @@ export const Login = () => {
 		formData.append('username', username)
 		formData.append('password', password)
 
-		fetch("http://localhost:5000/login", {
+		fetch("https://little-water-7513.fly.dev/login", {
 			method: "POST",
 			body: formData
 		})

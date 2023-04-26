@@ -14,24 +14,21 @@ export const Dashboard = () => {
 
     useEffect(() => {
         const username = localStorage.getItem("username")
-        fetch(`http://localhost:5000/get-current-user?username=${username}`, {
+        fetch(`https://little-water-7513.fly.dev/get-current-user?username=${username}`, {
             method: "GET",
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             setUser(data)
-            
         })
         .catch(error => console.error(error))
 
-        fetch("http://localhost:5000/get-posts", {
+        fetch("https://little-water-7513.fly.dev/get-posts", {
             method: "GET"
         })
         .then(response => response.json())
         .then(data => {
             setPosts(data)
-            console.log(data)
         })
     },[localStorage.getItem("username")])
 

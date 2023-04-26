@@ -1,10 +1,10 @@
-FROM node:17-alpine
+FROM node:15.4 as build 
 
-WORKDIR /app
-COPY package*.json .
+WORKDIR /react-app
+COPY package.json .
 RUN npm install
 COPY . .
-CMD ['npm', 'run', 'dev']
+RUN npm run build
 
 FROM nginx:1.19
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
