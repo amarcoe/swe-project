@@ -57,6 +57,7 @@ def signup():
 
 
 @app.route("/get-current-user", methods=["GET"])
+@login_required
 def get_current_user():
     user_name = request.args["username"]
 
@@ -113,6 +114,7 @@ def handle_login():
 
 
 @app.route("/get-posts", methods=["GET"])
+@login_required
 def get_posts():
     all_posts = Posts.query.all()
     posts_list = []
@@ -134,6 +136,7 @@ def get_posts():
 
 
 @app.route("/update-bookmark", methods=["PUT"])
+@login_required
 def handle_bookmarks():
     try:
         data = request.get_json()  # get the JSON data from the request body
@@ -141,6 +144,10 @@ def handle_bookmarks():
         user = data.get("user")  # get the uid value from the JSON data
         post = Posts.query.filter(Posts.id == pid).first()
         print(post.bookmarked)
+
+        print(user not in post.bookmarked)
+        if user not in post.bookmarked:
+            post.bookmarked = post.bookmarked + [user]
         book_array = post.bookmarked
         print(user not in book_array)
         if user not in book_array:
@@ -162,6 +169,7 @@ def handle_bookmarks():
 
 
 @app.route("/post", methods=["POST"])
+@login_required
 def handle_post():
     form_data = flask.request.form
     now = datetime.now()
